@@ -14,10 +14,13 @@ export async function GET(request: NextRequest) {
     const searchQuery = `${query} 관광지`;
     const apiUrl = `https://openapi.naver.com/v1/search/local.json?query=${encodeURIComponent(searchQuery)}&display=20&start=1&sort=random`;
     
+    console.log('API 호출:', apiUrl);
+    console.log('Client ID:', process.env.NAVER_SEARCH_CLIENT_ID);
+    
     const response = await fetch(apiUrl, {
       headers: {
-        'X-Naver-Client-Id': process.env.NEXT_PUBLIC_NAVER_SEARCH_CLIENT_ID || '',
-        'X-Naver-Client-Secret': process.env.NEXT_PUBLIC_NAVER_SEARCH_SECRET || '',
+        'X-Naver-Client-Id': process.env.NAVER_SEARCH_CLIENT_ID || '',
+        'X-Naver-Client-Secret': process.env.NAVER_SEARCH_SECRET || '',
       },
     });
 
@@ -70,6 +73,10 @@ async function addCoordinates(spots: TravelSpot[], city: string): Promise<Travel
     '전주': { lat: 35.8242, lng: 127.1479 },
     '여수': { lat: 34.7604, lng: 127.6622 },
     '포항': { lat: 36.0190, lng: 129.3435 },
+    '대구': { lat: 35.8714, lng: 128.6014 },
+    '인천': { lat: 37.4563, lng: 126.7052 },
+    '광주': { lat: 35.1595, lng: 126.8526 },
+    '대전': { lat: 36.3504, lng: 127.3845 },
   };
 
   let baseCoord = { lat: 37.5665, lng: 126.9780 }; // 기본값: 서울
@@ -92,6 +99,8 @@ async function addCoordinates(spots: TravelSpot[], city: string): Promise<Travel
 
 // 폴백 데이터 (API 실패 시)
 function getFallbackSpots(query: string): TravelSpot[] {
+  console.log('폴백 데이터 사용 - 검색어:', query);
+  
   const fallbackData: { [key: string]: TravelSpot[] } = {
     '제주': [
       { name: '성산일출봉', lat: 33.4583, lng: 126.9408, description: '유네스코 세계자연유산', address: '제주특별자치도 서귀포시 성산읍' },
@@ -102,6 +111,11 @@ function getFallbackSpots(query: string): TravelSpot[] {
       { name: '해운대해수욕장', lat: 35.1587, lng: 129.1603, description: '부산 대표 해수욕장', address: '부산광역시 해운대구' },
       { name: '광안리해수욕장', lat: 35.1532, lng: 129.1189, description: '광안대교 야경 명소', address: '부산광역시 수영구' },
       { name: '감천문화마을', lat: 35.0979, lng: 129.0107, description: '산토리니 닮은 마을', address: '부산광역시 사하구' },
+    ],
+    '대구': [
+      { name: '팔공산', lat: 35.9675, lng: 128.6847, description: '대구 대표 산', address: '대구광역시 동구 팔공산로' },
+      { name: '서문시장', lat: 35.8675, lng: 128.5847, description: '대구 전통시장', address: '대구광역시 중구 큰장로' },
+      { name: '동성로', lat: 35.8714, lng: 128.6014, description: '대구 중심가', address: '대구광역시 중구 동성로' },
     ],
   };
 
