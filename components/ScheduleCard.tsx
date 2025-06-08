@@ -38,9 +38,21 @@ export default function ScheduleCard({ schedule }: ScheduleCardProps) {
                   </div>
                   
                   <div className="flex-1 min-w-0">
-                    <h3 className="text-lg font-semibold text-gray-800 truncate">
-                      {spot.name}
-                    </h3>
+                    <div className="flex items-center gap-2 mb-1">
+                      <h3 className="text-lg font-semibold text-gray-800 truncate">
+                        {spot.name}
+                      </h3>
+                      {spot.category && (
+                        <span className={`px-2 py-1 text-xs rounded-full font-medium ${
+                          spot.category === '관광지' ? 'bg-blue-100 text-blue-800' :
+                          spot.category === '식당' ? 'bg-green-100 text-green-800' :
+                          spot.category === '카페' ? 'bg-yellow-100 text-yellow-800' :
+                          'bg-gray-100 text-gray-800'
+                        }`}>
+                          {spot.category}
+                        </span>
+                      )}
+                    </div>
                     
                     {spot.description && (
                       <p className="text-gray-600 text-sm mt-1 line-clamp-2">
