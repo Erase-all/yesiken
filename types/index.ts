@@ -6,6 +6,7 @@ export interface TravelSpot {
   imgUrl?: string;
   address?: string;
   phone?: string;
+  category?: string;
 }
 
 export interface DaySchedule {
